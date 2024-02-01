@@ -1,0 +1,225 @@
+mysql> USE library;
+Database changed
+mysql> CREATE TABLE books ( book_id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, price DECIMAL(10, 2) NOT NULL, author VARCHAR(255) NOT NULL, availability BOOLEAN NOT NULL );
+Query OK, 0 rows affected (0.70 sec)
+
+mysql> SELECT * FROM books;
+Empty set (0.02 sec)
+
+mysql> SHOW TABLE books;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'books' at line 1
+mysql> clear
+mysql> INSERT INTO books VALUE(1,ALCHEMIST,200,COELHO,1);
+ERROR 1054 (42S22): Unknown column 'ALCHEMIST' in 'field list'
+mysql> INSERT INTO books (title, price, author, availability)
+    -> VALUES 
+    -> ('To Kill a Mockingbird', 12.99, 'Harper Lee', true),
+    -> ('1984', 14.99, 'George Orwell', true),
+    -> ('The Great Gatsby', 11.99, 'F. Scott Fitzgerald', true);
+Query OK, 3 rows affected (0.11 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM books
+    -> ;
++---------+-----------------------+-------+---------------------+--------------+
+| book_id | title                 | price | author              | availability |
++---------+-----------------------+-------+---------------------+--------------+
+|       1 | To Kill a Mockingbird | 12.99 | Harper Lee          |            1 |
+|       2 | 1984                  | 14.99 | George Orwell       |            1 |
+|       3 | The Great Gatsby      | 11.99 | F. Scott Fitzgerald |            1 |
++---------+-----------------------+-------+---------------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE publisher(due_date DATE, return_date DATE, issue VARCHAR);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> CREATE TABLE publisher(due_date DATE, return_date DATE, issue VARCHAR(255));
+Query OK, 0 rows affected (1.30 sec)
+
+mysql> SHOW TABLES;
++-------------------+
+| Tables_in_library |
++-------------------+
+| books             |
+| publisher         |
++-------------------+
+2 rows in set (0.01 sec)
+
+mysql> INSERT INTO publisher(due_date,return_date,issue) VALUES ('2024-07-02','2024-05-02','Feb-2024');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> SELECT * FROM publisher
+    -> ;
++------------+-------------+----------+
+| due_date   | return_date | issue    |
++------------+-------------+----------+
+| 2024-07-02 | 2024-05-02  | Feb-2024 |
++------------+-------------+----------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TALBE member(memb_id INT AUTO_INCREMENT PRIMARY KEY, memb_info VARCHAR(255), memb_type VARCHAR(255), address VARCHAR(255), attr_name VARCHAR(255),exp_date DATE);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TALBE member(memb_id INT AUTO_INCREMENT PRIMARY KEY, memb_info VARCHAR(255), mem' at line 1
+mysql> CREATE TABLE member(memb_id INT AUTO_INCREMENT PRIMARY KEY, memb_info VARCHAR(255), memb_type VARCHAR(255), address VARCHAR(255), attr_name VARCHAR(255),exp_date DATE);
+Query OK, 0 rows affected (1.10 sec)
+
+mysql> INSERT INTO member(memb_info,memb_type,address,attr_name,exp_date) VALUES('SE-IT student','Regular','Boys Hostel-B VPKBIET BARAMATI','SE','2024-31-12');
+ERROR 1292 (22007): Incorrect date value: '2024-31-12' for column 'exp_date' at row 1
+mysql> INSERT INTO member(memb_info,memb_type,address,attr_name,exp_date) VALUES('SE-IT student','Regular','Boys Hostel-B VPKBIET BARAMATI','SE','2024-12-31');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> SELECT * USER FROM member;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'USER FROM member' at line 1
+mysql> SELECT * FROM member;
++---------+---------------+-----------+--------------------------------+-----------+------------+
+| memb_id | memb_info     | memb_type | address                        | attr_name | exp_date   |
++---------+---------------+-----------+--------------------------------+-----------+------------+
+|       1 | SE-IT student | Regular   | Boys Hostel-B VPKBIET BARAMATI | SE        | 2024-12-31 |
++---------+---------------+-----------+--------------------------------+-----------+------------+
+1 row in set (0.00 sec)
+
+mysql> DROP TABLE publisher;
+Query OK, 0 rows affected (0.33 sec)
+
+mysql> CREATE TABLE publisher(pub_id INT AUTO_INCREMENT PRIMARY KEY,address VARCHAR(255), name VARCHAR(255));
+Query OK, 0 rows affected (0.95 sec)
+
+mysql> INSERT INTO publisher(address,name) VALUES('SPPU-Pune','Rajhans-Pune');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> SELECT * FROM publisher;
++--------+-----------+--------------+
+| pub_id | address   | name         |
++--------+-----------+--------------+
+|      1 | SPPU-Pune | Rajhans-Pune |
++--------+-----------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT title FROM books WHERE id='1';
+ERROR 1054 (42S22): Unknown column 'id' in 'where clause'
+mysql> SELECT title FROM books WHERE book_id = '1';
++-----------------------+
+| title                 |
++-----------------------+
+| To Kill a Mockingbird |
++-----------------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE publisher RENAME TO publishers;
+Query OK, 0 rows affected (0.77 sec)
+
+mysql> SHOW TABLES;
++-------------------+
+| Tables_in_library |
++-------------------+
+| books             |
+| member            |
+| publishers        |
++-------------------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE publisher ADD COLUMN(qty INT);
+ERROR 1146 (42S02): Table 'library.publisher' doesn't exist
+mysql> ALTER TABLE publishers ADD COLUMN(qty INT);
+Query OK, 0 rows affected (0.38 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM publishers;
++--------+-----------+--------------+------+
+| pub_id | address   | name         | qty  |
++--------+-----------+--------------+------+
+|      1 | SPPU-Pune | Rajhans-Pune | NULL |
++--------+-----------+--------------+------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO publishers(qty) VALUES(100);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> SELECT * FROM publishers;
++--------+-----------+--------------+------+
+| pub_id | address   | name         | qty  |
++--------+-----------+--------------+------+
+|      1 | SPPU-Pune | Rajhans-Pune | NULL |
+|      2 | NULL      | NULL         |  100 |
++--------+-----------+--------------+------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO publishers(qty) WHERE pub_id = '1';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE pub_id = '1'' at line 1
+mysql> INSERT INTO publishers(qty) VALUES(100) WHERE pub_id = '1';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE pub_id = '1'' at line 1
+mysql> INSERT INTO publishers(qty) VALUE(100) WHERE pub_id = '1';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE pub_id = '1'' at line 1
+mysql> INSERT INTO publishers(qty) VALUE(100) WHERE 'pub_id' = '1';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE 'pub_id' = '1'' at line 1
+mysql> INSERT INTO publishers(qty) VALUE(100) WHERE pub_id = 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE pub_id = 1' at line 1
+mysql> UPDATE publishers SET qty = '100' WHERE pub_id = '1';
+Query OK, 1 row affected (0.20 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM publishers;
++--------+-----------+--------------+------+
+| pub_id | address   | name         | qty  |
++--------+-----------+--------------+------+
+|      1 | SPPU-Pune | Rajhans-Pune |  100 |
+|      2 | NULL      | NULL         |  100 |
++--------+-----------+--------------+------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE books SET title ='Alchemist' WHERE id = '2';
+ERROR 1054 (42S22): Unknown column 'id' in 'where clause'
+mysql> UPDATE books SET title ='Alchemist' WHERE book_id = '2';
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM books;
++---------+-----------------------+-------+---------------------+--------------+
+| book_id | title                 | price | author              | availability |
++---------+-----------------------+-------+---------------------+--------------+
+|       1 | To Kill a Mockingbird | 12.99 | Harper Lee          |            1 |
+|       2 | Alchemist             | 14.99 | George Orwell       |            1 |
+|       3 | The Great Gatsby      | 11.99 | F. Scott Fitzgerald |            1 |
++---------+-----------------------+-------+---------------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> ALTER TABLE books ALTER COLUMN availability VARCHAR(255);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'VARCHAR(255)' at line 1
+mysql> ALTER TABLE books ALTER COLUMN availability VARCHAR;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'VARCHAR' at line 1
+mysql> ALTER TABLE books ALTER COLUMN availability TYPE VARCHAR(255);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TYPE VARCHAR(255)' at line 1
+mysql> ALTER TABLE publisher ALTER COLUMN qty VARCHAR(255);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'VARCHAR(255)' at line 1
+mysql> ALTER TABLE publisher ALTER COLUMN qty TYPE VARCHAR(255);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TYPE VARCHAR(255)' at line 1
+mysql> DELETE FROM books WHERE book_id = '1';
+Query OK, 1 row affected (0.11 sec)
+
+mysql> SELECT * FROM books;
++---------+------------------+-------+---------------------+--------------+
+| book_id | title            | price | author              | availability |
++---------+------------------+-------+---------------------+--------------+
+|       2 | Alchemist        | 14.99 | George Orwell       |            1 |
+|       3 | The Great Gatsby | 11.99 | F. Scott Fitzgerald |            1 |
++---------+------------------+-------+---------------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE publisher ALTER COLUMN TYPE qty VARCHAR(255);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'qty VARCHAR(255)' at line 1
+mysql> ALTER TABLE publisher MODIFY qty VARCHAR(255);
+ERROR 1146 (42S02): Table 'library.publisher' doesn't exist
+mysql> ALTER TABLE publishers MODIFY qty VARCHAR(255);
+Query OK, 2 rows affected (2.86 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM publishers;
++--------+-----------+--------------+------+
+| pub_id | address   | name         | qty  |
++--------+-----------+--------------+------+
+|      1 | SPPU-Pune | Rajhans-Pune | 100  |
+|      2 | NULL      | NULL         | 100  |
++--------+-----------+--------------+------+
+2 rows in set (0.00 sec)
+
+mysql> 
+
+
