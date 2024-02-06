@@ -1,0 +1,82 @@
+CREATE DATABASE vpkbiet;
+Query OK, 1 row affected (0.15 sec)
+
+mysql> USE vpkbiet;
+Database changed
+mysql> CREATE TABLE student( stud_id int PRIMARY KEY AUTO_INCREMENT NOT NULL, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), branch VARCHAR(255), city VARCHAR(255),);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> CREATE TABLE student( stud_id INT  AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), branch VARCHAR(255), city VARCHAR(255),)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> CREATE TABLE student( stud_id INT  AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), branch VARCHAR(255), city VARCHAR(255),);;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+ERROR: 
+No query specified
+
+mysql> CLEAR
+mysql> CREATE TABLE student( stud_id INT  AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), branch VARCHAR(255), city VARCHAR(255));
+Query OK, 0 rows affected (1.23 sec)
+
+mysql> CREATE TABLE department(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), location VARCHAR(255) NOT NULL);
+Query OK, 0 rows affected (1.27 sec)
+
+mysql> FOREIGN KEY(branch) REFERENCE department;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FOREIGN KEY(branch) REFERENCE department' at line 1
+mysql> FOREIGN KEY(branch) REFERENCES department;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FOREIGN KEY(branch) REFERENCES department' at line 1
+mysql> DROP TABLE student;
+Query OK, 0 rows affected (0.42 sec)
+
+mysql> CREA
+    -> ^C
+mysql> CREATE TABLE student( stud_id INT AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), city VARCHAR(255), branch FOREIGN KEY REFERENCES department);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FOREIGN KEY REFERENCES department)' at line 1
+mysql> CREATE TABLE student( stud_id INT AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), city VARCHAR(255), FOREIGN KEY(branch) REFERENCES department);
+ERROR 1072 (42000): Key column 'branch' doesn't exist in table
+mysql> CREATE TABLE student( stud_id INT AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), city VARCHAR(255), branch VARCHAR(255), FOREIGN KEY(branch) REFERENCES department);
+ERROR 1239 (42000): Incorrect foreign key definition for 'foreign key without name': Key reference and table reference don't match
+mysql> SELECT * FROM department;
+Empty set (0.02 sec)
+
+mysql> INSERT INTO department(name,location) VALUES('IT','VPKBIET-2-FLOOR');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> SELECT * FROM department;
++----+------+-----------------+
+| id | name | location        |
++----+------+-----------------+
+|  1 | IT   | VPKBIET-2-FLOOR |
++----+------+-----------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE student( stud_id INT AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), city VARCHAR(255), branch VARCHAR(255), FOREIGN KEY branch REFERENCES department);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'REFERENCES department)' at line 1
+mysql> CREATE TABLE student( stud_id INT AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), city VARCHAR(255), branch VARCHAR(255), FOREIGN KEY(branch) REFERENCES department(id));
+ERROR 3780 (HY000): Referencing column 'branch' and referenced column 'id' in foreign key constraint 'student_ibfk_1' are incompatible.
+mysql> CREATE TABLE student( stud_id INT AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), city VARCHAR(255), branch VARCHAR(255), FOREIGN KEY(branch) REFERENCES department(id));
+ERROR 3780 (HY000): Referencing column 'branch' and referenced column 'id' in foreign key constraint 'student_ibfk_1' are incompatible.
+mysql> CREATE TABLE student( stud_id INT AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(255) NOT NULL, lname VARCHAR(255), city VARCHAR(255), branch INT, FOREIGN KEY(branch) REFERENCES department(id));
+Query OK, 0 rows affected (0.84 sec)
+
+mysql> INSERT INTO student(fname,lname,city,branch) VALUES ('Manthan','Mane','Gokulnagar',1);
+Query OK, 1 row affected (0.12 sec)
+
+mysql> SELECT * FROM student
+    -> ;
++---------+---------+-------+------------+--------+
+| stud_id | fname   | lname | city       | branch |
++---------+---------+-------+------------+--------+
+|       1 | Manthan | Mane  | Gokulnagar |      1 |
++---------+---------+-------+------------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT branch FROM student WHERE stud_id = '1';
++--------+
+| branch |
++--------+
+|      1 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> 
+
