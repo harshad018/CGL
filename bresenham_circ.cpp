@@ -31,12 +31,8 @@ void drawQuadrants()//for display 4 quadrants
 
 void bresenham_circ(){
 
-	for(int i =0; i<3;i++){
-	cout<<"Enter the value of radius: "<<endl;
-	cin>>r;
-	cout<<"Enter the co-ordinates of center x,y: "<<endl;
-	cin>>xc;
-	cin>>yc;
+	
+	
 	x1 =0;
 	y1 = r;
 	
@@ -107,7 +103,7 @@ void bresenham_circ(){
 
 
 
-}
+
 
 void mh(){
 
@@ -137,6 +133,177 @@ void mv(){
 
 }
 
+void eye_left(){
+
+r = r/6;
+
+
+x1 =0;
+	y1 = r;
+	
+	dt = 2*(1-r);
+	int limit = 0;
+	
+	while (y1 >= limit){
+		
+		glBegin(GL_POINTS);
+			glVertex2i(xc -20 +x1,yc+20+y1);
+			glVertex2i(xc-20+x1,yc+20-y1);
+			glVertex2i(xc-20-x1,yc+20-y1);
+			glVertex2i(xc-20+x1,yc+20+y1);
+			
+		glEnd();
+		
+		if (dt < 0){
+			dl = 2*dt + 2*y1 - 1;
+			
+			if( dl <= 0){
+				mh();
+			
+			}
+			else{
+			
+				md();
+			
+			}
+		
+		}
+	
+		else if( dt > 0){
+		
+			dl = 2*dt - 2*x1 -1;
+			
+			if( dl <= 0){
+			
+				md();
+			}
+			else{
+				mv();
+			
+			}
+		
+		
+		
+		}
+		
+	       else if( dt ==0){
+	       		md();
+	       
+	       
+	       
+	       
+	       }
+	
+	
+	
+	
+	
+	
+	}
+	
+	
+}
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void eye_right(){
+
+
+
+x1 =0;
+	y1 = r;
+	
+	dt = 2*(1-r);
+	int limit = 0;
+	
+	while (y1 >= limit){
+		
+		glBegin(GL_POINTS);
+			glVertex2i(xc +20 +x1,yc+20+y1);
+			glVertex2i(xc+20+x1,yc+20-y1);
+			glVertex2i(xc+20-x1,yc+20-y1);
+			glVertex2i(xc+20+x1,yc+20+y1);
+			
+		glEnd();
+		
+		if (dt < 0){
+			dl = 2*dt + 2*y1 - 1;
+			
+			if( dl <= 0){
+				mh();
+			
+			}
+			else{
+			
+				md();
+			
+			}
+		
+		}
+	
+		else if( dt > 0){
+		
+			dl = 2*dt - 2*x1 -1;
+			
+			if( dl <= 0){
+			
+				md();
+			}
+			else{
+				mv();
+			
+			}
+		
+		
+		
+		}
+		
+	       else if( dt ==0){
+	       		md();
+	       
+	       
+	       
+	       
+	       }
+	
+	
+	
+	
+	
+	
+	}
+	
+	
+}
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
 void smile(){
 	int x;
 	int y;
@@ -165,13 +332,19 @@ void display()
 	
 	bresenham_circ();
 	smile();
+	eye_right();
+	eye_left();
 	
 	glFlush(); 	
 }
 
 int main(int argc,char **argv)
 {
-	
+	cout<<"Enter the value of radius: "<<endl;
+	cin>>r;
+	cout<<"Enter the co-ordinates of center x,y: "<<endl;
+	cin>>xc;
+	cin>>yc;
 	
 	glutInit(&argc,argv);
 	glutInitWindowSize(640,480);
