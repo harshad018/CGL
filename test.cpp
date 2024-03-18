@@ -1,11 +1,11 @@
 #include<iostream>
 #include<GL/glut.h>
-#include<stdlib.h>
+#include<unistd.h>
 using namespace std;
 
 int n, xmin, ymin, xmax, ymax;
-int x[10], y[10];
-int xx[20], yy[20];
+float x[10], y[10];
+float xx[10], yy[10];
 int i;
 float m[20];
 
@@ -14,7 +14,13 @@ void init()
     glClearColor(1, 0, 1, 0);
     gluOrtho2D(0, 640, 0, 480);
 }
+void clearscreen(){
+	sleep(2);
+	glClearColor(0,0,0,1);
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
+
+}
 void getdata()
 {
     cout << "Enter the number of vertices " << endl;
@@ -25,44 +31,33 @@ void getdata()
     }
     else
     {
-        cout << "enter the x vertices" << endl;
-        for (int i = 0; i < n; i++)
+        cout << "enter the x, y vertices" << endl;
+        for ( i = 0; i < n; i++)
         {
             cout << "enter " << i + 1 << " vertex" << endl;
-            cin >> x[i];
+            cin >> x[i]>>y[i];
+            
         }
-        cout << "enter the y vertices" << endl;
-        for (int i = 0; i < n; i++)
-        {
-            cout << "enter " << i + 1 << " vertex" << endl;
-            cin >> y[i];
-        }
+       
+       	x[i] = x[0];
+       	y[i] = y[0];
+        
+        
     }
 }
 
-void drawQuadrants()
-{
-    glBegin(GL_LINES);
 
-    glVertex2i(-320, 0);
-    glVertex2i(320, 0);
-
-    glVertex2i(0, -240);
-    glVertex2i(0, 240);
-
-    glEnd();
-}
 
 void window(int xmin, int ymin, int xmax, int ymax)
 {
-    glColor3f(0, 0, 0);
+    
     glBegin(GL_LINE_LOOP);
     glVertex2i(xmin, ymin);
     glVertex2i(xmin, ymax);
     glVertex2i(xmax, ymax);
     glVertex2i(xmax, ymin);
    glEnd();
-    glFlush();
+    
 }
 
 void drawPolygon()
@@ -74,6 +69,8 @@ void drawPolygon()
         glVertex2i(x[i], y[i]);
     }
     glEnd();
+    glColor3f(0,1,1);
+    window(xmin, ymin, xmax, ymax);
     glFlush();
 }
 
@@ -81,47 +78,43 @@ void slope()
 {
     for(int i=0;i<n;i++)
    {
-     m[i]=(y[i+1]-y[i])/(x[i+1]-x[i]);
+   	if((x[i+1]-x[i])==0){
+   	m[i] = 0;
+   	}
+   	else{
+     		m[i]=(y[i+1]-y[i])/(x[i+1]-x[i]);
+     }
    }
 }
 
 void Lclip()
 {
-    int k = 0;
-    
-
-    slope();
-
-    for (int i = 0; i < n; i++)
-    {
-        if (x[i] > xmin && x[i + 1] > xmin)
-        {
-            xx[k] = x[i + 1];
-            yy[k] = y[i + 1];
-            k++;
-        }
-        else if (x[i] > xmin && x[i + 1] < xmin)
-        {
-            xx[k] = xmin;
-            if (m[i] == 100000)
-            {
-                yy[k] = y[i];
-            }
-            else
-            {
-                yy[k] = y[i] + m[i] * (xmin - x[i]);
-            }
-            k++;
-        }
-        else if (x[i] < xmin && x[i + 1] > xmin)
-        {
-            xx[k] = xmin;
-            xx[k + 1] = x[i + 1];
-            yy[k] = y[i] + m[i] * (xmin - x[i]);
-            yy[k + 1] = y[i + 1];
-            k += 2;
-        }
+  int k = 0;
+  slope();
+  for(int i=0;i<n;i++)
+  {
+  if(x[i]>xmin && x[i+1] > xmin)
+  {
+   	xx[k]=x[i+1];
+   	yy[k]=y[i+1];
+   	k++;
+   }
+   else if(x[i]>xmin && xmin > x[i+1])
+   {
+   	xx[k]=xmin;
+   	yy[k]=y[i]+m[i]*(xmin-x[i]);
+   	k++;
+   }
+   else if(x[i]<xmin && x[i+1]>xmin)
+   {
+    	xx[k]=xmin;
+    	yy[k]=y[i]+m[i]*(xmin-x[i]);
+    	k++;
+    	xx[k]=x[i+1];
+    	yy[k]=y[i+1];
+    	k++;
     }
+   }
 
     n = k;
 
@@ -137,42 +130,31 @@ void Lclip()
 
 void Rclip()
 {
-    int k = 0;
-   
-
-    slope();
-
-    for (int i = 0; i < n; i++)
-    {
-        if (x[i] < xmax && x[i + 1] < xmax)
-        {
-            xx[k] = x[i + 1];
-            yy[k] = y[i + 1];
-            k++;
-        }
-        else if (x[i] < xmax && x[i + 1] > xmax)
-        {
-            xx[k] = xmax;
-            if (m[i] == 100000)
-            {
-                yy[k] = y[i];
-            }
-            else
-            {
-                yy[k] = y[i] + m[i] * (xmax - x[i]);
-            }
-            k++;
-        }
-        else if (x[i] > xmax && x[i + 1] < xmax)
-        {
-            xx[k] = xmax;
-            xx[k + 1] = x[i + 1];
-            yy[k] = y[i] + m[i] * (xmax - x[i]);
-            yy[k + 1] = y[i + 1];
-            k += 2;
-        }
+   int k = 0;
+  for(i=0;i<n;i++)
+  {
+  if(x[i]<xmax && x[i+1]<xmax)
+  {
+   	xx[k]=x[i+1];
+   	yy[k]=y[i+1];
+  	 k++;
+   }
+   else if(x[i]<xmax  && x[i+1]>xmax)
+   {
+   	xx[k]=xmax;
+   	yy[k]=y[i]+m[i]*(xmax-x[i]);
+   	k++;
+   }
+   else if (x[i]>xmax  &&x[i+1]<xmax)
+   {
+    	xx[k]=xmax;
+    	yy[k]=y[i]+m[i]*(xmax-x[i]);
+    	k++;
+   	 xx[k]=x[i+1];
+    	yy[k]=y[i+1];
+    	k++;
     }
-
+   }
     n = k;
 
     for (i = 0; i < n; i++)
@@ -180,44 +162,135 @@ void Rclip()
         x[i] = xx[i];
         y[i] = yy[i];
     }
+    
+    x[i] = x[0];
+    y[i] = y[0];
 }
 
+void topclip()
+{
+    int k = 0;
+    slope(); 
+
+    for (int i = 0; i < n; i++)
+    {
+        if (y[i] <= ymax) 
+        {
+            xx[k] = x[i];
+            yy[k] = y[i];
+            k++;
+            
+            if (y[i + 1] > ymax) 
+            {
+                xx[k] = x[i] + (ymax - y[i]) / m[i];
+                yy[k] = ymax;
+                k++;
+            }
+        }
+        else if (y[i] > ymax && y[i + 1] <= ymax) 
+        {
+            xx[k] = x[i] + (ymax - y[i]) / m[i]; 
+            yy[k] = ymax;
+            k++;
+            xx[k] = x[i + 1];
+            yy[k] = y[i + 1];
+            k++;
+        }
+    }
+
+    n = k;
+
+   
+    for (int i = 0; i < n; i++)
+    {
+        x[i] = xx[i];
+        y[i] = yy[i];
+    }
+
+    
+    x[k] = x[0];
+    y[k] = y[0];
+}
+void bottomclip()
+{
+    int k = 0;
+    slope();
+
+    for (int i = 0; i < n; i++)
+    {
+        if (y[i] >= ymin) 
+        {
+            xx[k] = x[i];
+            yy[k] = y[i];
+            k++;
+
+            if (y[i + 1] < ymin) 
+            {
+                xx[k] = x[i] + (ymin - y[i]) / m[i];
+                yy[k] = ymin;
+                k++;
+            }
+        }
+        else if (y[i] < ymin && y[i + 1] >= ymin) 
+        {
+            xx[k] = x[i] + (ymin - y[i]) / m[i]; 
+            yy[k] = ymin;
+            k++;
+            xx[k] = x[i + 1];
+            yy[k] = y[i + 1];
+            k++;
+        }
+    }
+
+    n = k;
+
+   
+    for (int i = 0; i < n; i++)
+    {
+        x[i] = xx[i];
+        y[i] = yy[i];
+    }
+
+   
+    x[k] = x[0];
+    y[k] = y[0];
+}
 
 void display(){
 
 //drawQuadrants();
 
-    window(xmin, ymin, xmax, ymax);
+    
 
     drawPolygon();
-
+    clearscreen();
     Lclip();
-
-    Rclip();
-
-    window(xmin, ymin, xmax, ymax);
-
+    
     drawPolygon();
+    
+    clearscreen();
+    
+    Rclip();
+    drawPolygon();
+    clearscreen();
 
-    glFlush();
-
-
-
-
-
-
-
-
+    topclip();
+    drawPolygon();
+    clearscreen();
+    
+    bottomclip();
+    drawPolygon();
+    
 
 }
 int main(int argc, char**argv)
 {
     getdata();
 
-    xmin = -150;
-    ymin = -150;
-    xmax = 150;
-    ymax = 150;
+    xmin = 100;
+    ymin = 100;
+    xmax = 200;
+    ymax = 200;
 
     glutInit(&argc, argv);
 
