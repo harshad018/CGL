@@ -1,18 +1,15 @@
 #include<iostream>
 #include<GL/glut.h>
-#include "stack.cpp";
+#include<cmath>
+
 using namespace std;
 
-stack s;
-int A[2][2] = {{1,2},
-		{3,4},
-		};
+
+float A[3][3];
 		
-int B[2][2] = {{5,6},
-		{7,8},
-		};
+float B[3][3];
 		
-int C[2][2];
+float C[3][3];
 
 void init()
 {
@@ -43,23 +40,45 @@ void drawPolygon(){
 
 }
 
+void input(){
+
+		
+	cout<<"Enter the value in A Matrix"<<endl;
+	
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cin>>A[i][j];
+		
+		}
+	
+	}
+
+
+
+
+
+
+
+
+}
+
 void multiply(){
 
-	int add;
-
-	for(int i = 0; i < 2 ; i++){
 	
-		for( int j = 0 ; j < 2 ; j++){
-			C[i][j-1] = add;
-			int result = A[i][j] * B[j][i];
-			s.push(result);
+
+	for(int i = 0; i < 3 ; i++){
+	
+		for( int j = 0 ; j < 3 ; j++){
+			C[i][j] = 0;
+            	for (int k = 0; k < 3; ++k) {
+                	C[i][j] += A[i][k] * B[k][j];
+            	}
 		
 		
 		}
-			int first = s.pop();
-			int second = s.pop();
 			
-			add = first + second;
 			
 			
 	
@@ -67,7 +86,185 @@ void multiply(){
 	
 	}
 
-cout<<C[2][2]<<endl;
+cout<<C[3][3]<<endl;
+
+}
+
+
+void rotation(){
+int a;
+
+float b;
+
+
+cout<<"Enter the value of a: ";
+cin>>a;
+
+b = 180/3.14;
+for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			B[i][j] = 0;
+		
+		}
+	
+	}
+
+
+B[0][0] = cos(b);
+	B[1][1] = cos(b);
+	B[2][2] = 1;
+
+B[1][0] = sin(b);
+B[0][1] = -sin(b);
+/*cout<<"Resultant Transformation Matrix: "<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<B[i][j]<<endl;
+		
+		}
+	
+	}*/
+multiply();
+
+cout<<"Final product of multiplication"<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<C[i][j]<<endl;
+		
+		}
+	
+	}
+
+
+
+
+}
+
+
+void translation(){
+
+float xc;
+float yc;
+
+
+cout<<"Enter the value of xc: ";
+cin>>xc;
+
+cout<<"Enter the value of yc: ";
+cin>>yc;
+
+for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+			if ( i == j){
+			
+			B[i][j] = 1;
+			
+			}else{
+			B[i][j] = 0;
+			}
+		}
+	
+	}
+
+
+B[0][2] = xc;
+B[1][2] = yc;
+
+/*cout<<"Resultant Transformation Matrix: "<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<B[i][j]<<endl;
+		
+		}
+	
+	}*/
+
+multiply();
+
+
+cout<<"Final product of multiplication"<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<C[i][j]<<endl;
+		
+		}
+		
+	}
+
+
+
+
+
+
+}
+
+void scale(){
+	float sx;
+	
+	float sy;
+	cout<<"Enter the value of sx: ";
+	cin>>sx;
+	
+	cout<<"Enter the value of sy: ";
+	cin>>sy;
+
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			B[i][j] = 0;
+		
+		}
+	
+	}
+	
+	B[0][0] = sx;
+	B[1][1] = sy;
+	B[2][2] = 1;
+
+	/*cout<<"Resultant Transformation Matrix: "<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<B[i][j]<<endl;
+		
+		}
+	
+	}*/
+
+	multiply();
+	
+	cout<<"Final product of multiplication"<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<C[i][j]<<endl;
+		
+		}
+	
+	}
+	
+
+
+}
+
+void reflection(){
+
+
+
 
 }
 void display()
@@ -85,7 +282,10 @@ int main(int argc,char **argv)
 
 {
 
-	mutliply();
+	input();
+	//scale();
+	//rotation();
+	translation();
 	glutInit(&argc,argv);
 	glutInitWindowSize(640,480);
 	glutInitWindowPosition(100,100);
