@@ -261,7 +261,150 @@ void scale(){
 
 }
 
-void reflection(){
+void reflectionx(){
+
+	
+	
+
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			if ( i == j){
+			
+			B[i][j] = 1;
+			
+			}else{
+			B[i][j] = 0;
+			}
+		
+		}
+	
+	}
+	
+	
+	B[1][1] = -1;
+	
+	/*cout<<"Resultant Transformation Matrix: "<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<B[i][j]<<endl;
+		
+		}
+	
+	}*/
+	
+	multiply();
+	
+	cout<<"Final product of multiplication"<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<C[i][j]<<endl;
+		
+		}
+	
+	}
+	
+
+}
+
+void reflectiony(){
+
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			if ( i == j){
+			
+			B[i][j] = 1;
+			
+			}else{
+			B[i][j] = 0;
+			}
+		
+		}
+	
+	}
+	
+	
+	B[0][0] = -1;
+	
+	/*cout<<"Resultant Transformation Matrix: "<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<B[i][j]<<endl;
+		
+		}
+	
+	}*/
+	
+	multiply();
+	
+	cout<<"Final product of multiplication"<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<C[i][j]<<endl;
+		
+		}
+	
+	}
+	
+
+}
+void reflectionxy(){
+
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			if ( i == j){
+			
+			B[i][j] = 1;
+			
+			}else{
+			B[i][j] = 0;
+			}
+		
+		}
+	
+	}
+	
+	
+	B[1][1] = -1;
+	B[0][0] = -1;
+	
+	/*cout<<"Resultant Transformation Matrix: "<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<B[i][j]<<endl;
+		
+		}
+	
+	}*/
+	
+	multiply();
+	
+	cout<<"Final product of multiplication"<<endl;
+	for ( int i = 0; i < 3; i++){
+	
+		for ( int j = 0; j < 3; j++){
+		
+			cout<<C[i][j]<<endl;
+		
+		}
+	
+	}
+	
 
 
 
@@ -283,9 +426,55 @@ int main(int argc,char **argv)
 {
 
 	input();
+	int ch;
+	do{
+	
+	cout<<"Enter the choice of transformation: /n 1.scaling /n2.rotation /n3.translation /n4.reflection /n5.Exit: ";
+	cin>>ch;
+	
+	switch(ch){
+	
+		case 1: scale();
+			break;
+			
+		case 2: rotation();
+			break;
+			
+		case 3: translation();
+			break;
+			
+		case 4: int ch2;
+			cout<<"Which reflection /n1.x /n2.y /n3.xy: ";
+			cin>>ch;
+			
+			switch(ch){
+			
+				case 1: reflectionx();
+					break;
+					
+				case 2: reflectiony();
+					break;
+					
+				case 3: reflectionxy();
+					break;
+			
+			}
+	
+			break;
+	
+	
+	
+	
+	
+	}
 	//scale();
 	//rotation();
-	translation();
+	//translation();
+	
+	
+	reflectionx();
+	
+	}while(ch < 5);
 	glutInit(&argc,argv);
 	glutInitWindowSize(640,480);
 	glutInitWindowPosition(100,100);
