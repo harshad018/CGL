@@ -28,13 +28,14 @@ void drawQuadrants()//for display 4 quadrants
 	glEnd();
 	
 }
-void drawPolygon(){
+void drawPolygon(float final[3][3]){
 
 	glBegin(GL_POLYGON);
-		glVertex2i(100,100);
-		glVertex2i(150,100);
-		glVertex2i(150,150);
-		glVertex2i(100,150);
+		for ( int i = 0; i<3; i++){
+		
+			glVertex2f(final[i][0],final[i][1]);
+		
+		}
 	glEnd();
 
 
@@ -86,7 +87,7 @@ void multiply(){
 	
 	}
 
-cout<<C[3][3]<<endl;
+	
 
 }
 
@@ -415,7 +416,7 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT);//clear the screen
 	
 	drawQuadrants();
-	drawPolygon();
+	
 	
 	
 	glFlush(); 	
@@ -427,7 +428,7 @@ int main(int argc,char **argv)
 
 	input();
 	int ch;
-	do{
+	
 	
 	cout<<"Enter the choice of transformation: /n 1.scaling /n2.rotation /n3.translation /n4.reflection /n5.Exit: ";
 	cin>>ch;
@@ -435,6 +436,7 @@ int main(int argc,char **argv)
 	switch(ch){
 	
 		case 1: scale();
+			drawPolygon(A);
 			break;
 			
 		case 2: rotation();
@@ -472,9 +474,9 @@ int main(int argc,char **argv)
 	//translation();
 	
 	
-	reflectionx();
 	
-	}while(ch < 5);
+	
+	
 	glutInit(&argc,argv);
 	glutInitWindowSize(640,480);
 	glutInitWindowPosition(100,100);
