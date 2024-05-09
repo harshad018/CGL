@@ -1,8 +1,8 @@
 #include <GL/glut.h>
 #include <iostream>
-#include <cmath>
+#include <math.h>
 
-#define PIE 3.1415926535898
+
 
 int n;
 
@@ -34,7 +34,7 @@ void Koch(float xa, float ya, float xd, float yd, int n)
     yb = (2 * ya + yd) / 3;
     yc = (2 * yd + ya) / 3;
     
-    double angle = (-60 * PIE) / 180;
+    double angle = (-60 * M_PI) / 180;
 
     midx = xb + ((xc - xb) * cos(angle)) + ((yc - yb) * sin(angle));
     midy = yb - ((xc - xb) * sin(angle)) + ((yc - yb) * cos(angle));
